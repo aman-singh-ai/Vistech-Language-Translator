@@ -15,7 +15,7 @@ from audio_recorder_streamlit import audio_recorder
 # 1. Page Configuration
 # -----------------------------------------------------------------------------
 st.set_page_config(
-    page_title="TechNeekX AI Translator",
+    page_title="VishTech AI Translator",
     page_icon="🌐",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -108,7 +108,7 @@ with st.sidebar:
     st.markdown("---")
     
     with st.expander("ℹ️ About Project", expanded=True):
-        st.markdown("**TechNeekX AI Translator** is a professional-grade web utility optimized for modern cross-language conversion.")
+        st.markdown("**VishTech AI Translator** is a professional-grade web utility optimized for modern cross-language conversion.")
         
     with st.expander("👨‍💻 Developer Stack", expanded=False):
         st.markdown("* **Role:** Full Stack Developer & UI/UX Designer\n* **Framework:** Streamlit\n* **Engine:** Python 3.10+")
@@ -128,14 +128,14 @@ with logo_col2:
             """
             <div style="text-align: center; margin-bottom: 12px;">
                 <span style="background-color: #3b82f6; color: #ffffff; padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 1.25rem; letter-spacing: 0.05em; display: inline-block; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                    TechNeekX AI
+                    VishTech AI
                 </span>
             </div>
             """,
             unsafe_allow_html=True
         )
 
-st.markdown("<h1 style='text-align: center; font-weight: 800; font-size: 2.5rem; margin-bottom: 6px; letter-spacing: -0.02em;'>TechNeekX AI Translator</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; font-weight: 800; font-size: 2.5rem; margin-bottom: 6px; letter-spacing: -0.02em;'>VishTech AI Translator</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #64748b; font-size: 1.05rem; margin-bottom: 32px; font-weight: 400;'>Translate text instantly with AI-powered multilingual support.</p>", unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
