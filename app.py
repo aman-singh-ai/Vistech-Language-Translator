@@ -15,7 +15,7 @@ from audio_recorder_streamlit import audio_recorder
 # 1. Page Configuration
 # -----------------------------------------------------------------------------
 st.set_page_config(
-    page_title="VishTech AI Translator",
+    page_title="Vishtech AI Translator",
     page_icon="🌐",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -128,7 +128,7 @@ with logo_col2:
             """
             <div style="text-align: center; margin-bottom: 12px;">
                 <span style="background-color: #3b82f6; color: #ffffff; padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 1.25rem; letter-spacing: 0.05em; display: inline-block; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                    VishTech AI
+                    TechNeekX AI
                 </span>
             </div>
             """,
