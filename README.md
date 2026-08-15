@@ -8,7 +8,7 @@ VishTech AI Translator is a lightweight, mobile-friendly web app for fast multil
 
 ## Live Demo
 
-https://aman-singh-ai.github.io/Vistech-Language-Translator/
+https://vistech-language-translator-sui8p3qxezsb8ywmycwhfj.streamlit.app/
 
 ## Tech Stack
 
