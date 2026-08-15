@@ -6,12 +6,16 @@ from gtts import gTTS
 import io
 import time
 from xhtml2pdf import pisa
+import PyPDF2
+from PIL import Image as PILImage
+import pytesseract
+from audio_recorder_streamlit import audio_recorder
 
 # -----------------------------------------------------------------------------
 # 1. Page Configuration
 # -----------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Vishtech AI Translator",
+    page_title="TechNeekX AI Translator",
     page_icon="🌐",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -21,7 +25,7 @@ st.set_page_config(
 if 'history' not in st.session_state:
     st.session_state.history = []
 if 'theme' not in st.session_state:
-    st.session_state.theme = 'light'
+    st.session_state.theme = 'dark'
 if 'source_text' not in st.session_state:
     st.session_state.source_text = ""
 if 'translated_text' not in st.session_state:
@@ -104,31 +108,13 @@ with st.sidebar:
     st.markdown("---")
     
     with st.expander("ℹ️ About Project", expanded=True):
-        st.markdown("**Vishtech AI Translator** is a professional-grade web utility optimized for modern cross-language conversion.")
+        st.markdown("**TechNeekX AI Translator** is a professional-grade web utility optimized for modern cross-language conversion.")
         
     with st.expander("👨‍💻 Developer Stack", expanded=False):
         st.markdown("* **Role:** Full Stack Developer & UI/UX Designer\n* **Framework:** Streamlit\n* **Engine:** Python 3.10+")
         
     with st.expander("📦 Core Libraries", expanded=False):
-        st.markdown("`deep-translator`  \n`SpeechRecognition`  \n`gTTS`  \n`xhtml2pdf`  \n`CSS3 Injection`")
-
-    st.markdown(
-        """
-        <style>
-        .stSidebar [data-testid="stExpander"] > div > details > div {
-            display: none !important;
-        }
-        .stSidebar [data-testid="stExpander"] > div > details:hover > div,
-        .stSidebar [data-testid="stExpander"] > div > details[open] > div {
-            display: block !important;
-        }
-        .stSidebar [data-testid="stExpander"] > div > details {
-            cursor: pointer;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+        st.markdown("`deep-translator`  \n`SpeechRecognition`  \n`audio-recorder-streamlit`  \n`gTTS`  \n`xhtml2pdf`  \n`PyPDF2`  \n`pytesseract`")
 
 # -----------------------------------------------------------------------------
 # 4. Branding & Logo Header
@@ -142,18 +128,18 @@ with logo_col2:
             """
             <div style="text-align: center; margin-bottom: 12px;">
                 <span style="background-color: #3b82f6; color: #ffffff; padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 1.25rem; letter-spacing: 0.05em; display: inline-block; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                    Vishtech AI
+                    TechNeekX AI
                 </span>
             </div>
             """,
             unsafe_allow_html=True
         )
 
-st.markdown("<h1 style='text-align: center; font-weight: 800; font-size: 2.5rem; margin-bottom: 6px; letter-spacing: -0.02em;'>Vishtech AI Translator</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; font-weight: 800; font-size: 2.5rem; margin-bottom: 6px; letter-spacing: -0.02em;'>TechNeekX AI Translator</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #64748b; font-size: 1.05rem; margin-bottom: 32px; font-weight: 400;'>Translate text instantly with AI-powered multilingual support.</p>", unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
-# 5. Translation Engine Controllers
+# 5. Engine Controllers (Text, Voice, File)
 # -----------------------------------------------------------------------------
 def trigger_translation(text_input, src_l, tgt_l):
     if not text_input or not text_input.strip():
@@ -192,27 +178,33 @@ def trigger_translation(text_input, src_l, tgt_l):
             else:
                 st.error(f"❌ Unexpected Error: An issue occurred during processing. ({str(e)})")
 
-def trigger_voice_capture():
+def process_uploaded_file(uploaded_file):
+    extracted_text = ""
     try:
-        if sr is None or not hasattr(sr, 'Recognizer'):
-            st.error("Engine failure: Speech Recognition components corrupted.")
-            return
+        # PDF Parsing
+        if uploaded_file.type == "application/pdf":
+            pdf_reader = PyPDF2.PdfReader(uploaded_file)
+            for page in pdf_reader.pages:
+                page_text = page.extract_text()
+                if page_text:
+                    extracted_text += page_text + "\n"
+        
+        # Image OCR Parsing
+        elif uploaded_file.type in ["image/png", "image/jpeg", "image/jpg"]:
+            image = PILImage.open(uploaded_file)
+            extracted_text = pytesseract.image_to_string(image)
+        
+        # Update Session State
+        if extracted_text.strip():
+            st.session_state.source_text = extracted_text.strip()
+            st.success("✅ Text extracted from file successfully!")
+        else:
+            st.warning("⚠️ No readable text could be found in the uploaded file.")
             
-        recognizer = sr.Recognizer()
-        with sr.Microphone() as source:
-            st.info("🎙️ Listening... Please speak into your microphone.")
-            recognizer.adjust_for_ambient_noise(source, duration=0.6)
-            audio = recognizer.listen(source, timeout=3.0, phrase_time_limit=6.0)
-            captured_text = recognizer.recognize_google(audio)
-            st.session_state.source_text = captured_text
-            st.success("✅ Voice captured successfully.")
-            st.rerun()
-    except sr.WaitTimeoutError:
-        st.error("⚠️ Timeout: No audio signals detected.")
-    except sr.UnknownValueError:
-        st.error("⚠️ Unintelligible: Could not understand the audio.")
+    except pytesseract.TesseractNotFoundError:
+        st.error("❌ Tesseract OCR is not configured in environment. PDF extraction works natively.")
     except Exception as e:
-        st.error(f"❌ Hardware Error: Ensure microphone is attached and allowed. ({str(e)})")
+        st.error(f"❌ Error processing file: {str(e)}")
 
 # -----------------------------------------------------------------------------
 # 6. Main Operational Workspace Layout
@@ -223,10 +215,18 @@ with layout_col1:
     st.markdown("<div class='translation-card'>", unsafe_allow_html=True)
     src_lang_selection = st.selectbox("Source Language", options=SRC_LANG_OPTIONS, index=0, help="Select origin language or Auto Detect")
     
+    # Document/Image File Uploader Section
+    uploaded_file = st.file_uploader("📂 Upload Document/Image (PDF, JPG, PNG)", type=['pdf', 'png', 'jpg', 'jpeg'], help="Extract text from files for translation")
+    if uploaded_file is not None:
+        if st.button("📄 Extract Text from File", use_container_width=True):
+            with st.spinner("Extracting text..."):
+                process_uploaded_file(uploaded_file)
+                st.rerun()
+
     input_payload = st.text_area(
         "Source Input Buffer", 
         value=st.session_state.source_text, 
-        placeholder="Type or speak text here to translate...", 
+        placeholder="Type, speak, or upload a file to translate...", 
         height=210,
         label_visibility="collapsed"
     )
@@ -236,15 +236,39 @@ with layout_col1:
     word_count = len(input_payload.split()) if input_payload.strip() else 0
     st.markdown(f"<p class='metrics-counter'>Metrics &mdash; Characters: {char_count} | Words: {word_count}</p>", unsafe_allow_html=True)
     
-    btn_row_1, btn_row_2 = st.columns(2)
-    with btn_row_1:
-        if st.button("🎙️ Voice Input", use_container_width=True, help="Record audio directly from your mic"):
-            trigger_voice_capture()
-    with btn_row_2:
+    # Browser-Based Direct Audio Recorder (Cloud & Mobile Compatible)
+    rec_col, clear_col = st.columns([6, 6])
+    with rec_col:
+        st.markdown("<p style='font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;'>🎙️ Record Voice (Click Mic):</p>", unsafe_allow_html=True)
+        audio_bytes = audio_recorder(
+            text="",
+            recording_color="#ef4444",
+            neutral_color="#3b82f6",
+            icon_size="2x"
+        )
+        if audio_bytes:
+            with st.spinner("Transcribing speech..."):
+                try:
+                    recognizer = sr.Recognizer()
+                    audio_file = io.BytesIO(audio_bytes)
+                    with sr.AudioFile(audio_file) as source:
+                        audio_data = recognizer.record(source)
+                        captured_text = recognizer.recognize_google(audio_data)
+                        st.session_state.source_text = captured_text
+                        st.success("✅ Voice transcribed successfully!")
+                        st.rerun()
+                except sr.UnknownValueError:
+                    st.warning("⚠️ Audio not recognized. Please speak clearly.")
+                except Exception as e:
+                    st.error(f"Voice Transcription Error: {str(e)}")
+                    
+    with clear_col:
+        st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
         if st.button("🗑️ Clear Workspace", use_container_width=True, help="Clear input and output areas"):
             st.session_state.source_text = ""
             st.session_state.translated_text = ""
             st.rerun()
+            
     st.markdown("</div>", unsafe_allow_html=True)
 
 with layout_col2:
@@ -270,7 +294,7 @@ with layout_col3:
         "Translation Output Window", 
         value=st.session_state.translated_text, 
         placeholder="Translation result will appear here...",
-        height=210, 
+        height=325, 
         disabled=True,
         label_visibility="collapsed"
     )
@@ -306,25 +330,9 @@ if st.session_state.translated_text:
         st.components.v1.html(copy_script, height=45)
         
     with ut_col2:
-        # Provide multiple voice/accent options via gTTS `tld` variants
-        VOICE_TLDS = {
-            "Default (US)": "com",
-            "United Kingdom (co.uk)": "co.uk",
-            "Australia (com.au)": "com.au",
-            "India (co.in)": "co.in",
-            "Canada (ca)": "ca"
-        }
-
-        st.markdown("**Speech Voice**")
-        voice_choice = st.selectbox("", options=list(VOICE_TLDS.keys()), index=0, help="Choose an accent/voice variant")
-        slow_speech = st.checkbox("Slow speech", value=False, key="tts_slow")
-
-        if st.button("🔊 Play Speech", use_container_width=True):
+        if st.button("🔊 Speech Output", use_container_width=True):
             try:
-                tld = VOICE_TLDS.get(voice_choice, "com")
-                lang_code = LANG_DISPLAY_TO_CODE.get(target_lang_selection, 'en')
-                # gTTS supports limited voice variants via `tld` and `slow`.
-                tts = gTTS(text=st.session_state.translated_text, lang=lang_code, tld=tld, slow=slow_speech)
+                tts = gTTS(text=st.session_state.translated_text, lang=LANG_DISPLAY_TO_CODE[target_lang_selection])
                 audio_buffer = io.BytesIO()
                 tts.write_to_fp(audio_buffer)
                 st.audio(audio_buffer.getvalue(), format="audio/mp3")
@@ -405,7 +413,8 @@ st.markdown("---")
 st.markdown(
     """
     <div style='text-align: center; padding: 12px 0 24px 0;'>
-        <p style='font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; color: #3b82f6;'>Developed by Aman Singh <span style='color: #ef4444;'>❤</span></p>
+        <p style='font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; color: #3b82f6;'>Developed by Aman Singh</p>
+        <p style='font-size: 0.85rem; font-weight: 500; margin-bottom: 8px; color: #64748b;'>CodeAlpha Artificial Intelligence Internship 2026</p>
         <p style='font-size: 0.78rem; font-weight: 400; color: #94a3b8; letter-spacing: 0.02em;'>Powered by Python • Streamlit • Deep Translator</p>
     </div>
     """, unsafe_allow_html=True
