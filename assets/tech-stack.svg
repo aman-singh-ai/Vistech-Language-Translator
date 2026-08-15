@@ -7,8 +7,9 @@
 
   <g transform="translate(30,20)">
     <rect width="160" height="80" fill="#3b82f6" class="box"/>
-    <text class="label" x="80" y="44" text-anchor="middle" fill="#fff">Streamlit</text>
-    <text class="sub" x="80" y="62" text-anchor="middle" fill="#dbeafe">UI Framework</text>
+    <image href="assets/logo.png" x="12" y="12" width="40" height="40" preserveAspectRatio="xMidYMid meet" />
+    <text class="label" x="110" y="34" text-anchor="middle" fill="#fff">Streamlit</text>
+    <text class="sub" x="110" y="54" text-anchor="middle" fill="#dbeafe">UI Framework</text>
   </g>
 
   <g transform="translate(220,20)">
