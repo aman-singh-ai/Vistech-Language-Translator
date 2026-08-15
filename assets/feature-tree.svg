@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <style>
+    .node { fill: #fff; stroke: #c7d2fe; stroke-width: 2; rx:10; }
+    .label { font: 600 14px 'Inter', sans-serif; fill: #0f172a; }
+    .link { stroke: #c7d2fe; stroke-width: 2; }
+    .pulse { animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0% { transform: scale(0.98); opacity:0.9 } 50% { transform: scale(1.02); opacity:1 } 100% { transform: scale(0.98); opacity:0.9 } }
+  </style>
+
+  <!-- Root -->
+  <g transform="translate(300,40)">
+    <rect class="node pulse" width="300" height="52" x="0" y="0"/>
+    <text class="label" x="150" y="32" text-anchor="middle">VishTech AI Translator</text>
+  </g>
+
+  <!-- Level 1 -->
+  <g transform="translate(60,140)">
+    <line class="link" x1="240" y1="26" x2="60" y2="0" />
+    <line class="link" x1="240" y1="26" x2="420" y2="0" />
+
+    <g transform="translate(0,0)">
+      <rect class="node" width="160" height="44"/>
+      <text class="label" x="80" y="28" text-anchor="middle">Translation Engine</text>
+    </g>
+
+    <g transform="translate(260,0)">
+      <rect class="node" width="160" height="44"/>
+      <text class="label" x="80" y="28" text-anchor="middle">Speech I/O</text>
+    </g>
+  </g>
+
+  <!-- Level 2 -->
+  <g transform="translate(20,260)">
+    <line class="link" x1="120" y1="0" x2="20" y2="40" />
+    <line class="link" x1="120" y1="0" x2="220" y2="40" />
+    <line class="link" x1="380" y1="0" x2="300" y2="40" />
+    <line class="link" x1="380" y1="0" x2="460" y2="40" />
+
+    <g transform="translate(0,40)">
+      <rect class="node" width="140" height="42"/>
+      <text class="label" x="70" y="26" text-anchor="middle">Auto-Detect</text>
+    </g>
+
+    <g transform="translate(160,40)">
+      <rect class="node" width="160" height="42"/>
+      <text class="label" x="80" y="26" text-anchor="middle">Translation APIs</text>
+    </g>
+
+    <g transform="translate(280,40)">
+      <rect class="node" width="140" height="42"/>
+      <text class="label" x="70" y="26" text-anchor="middle">STT (Mic)</text>
+    </g>
+
+    <g transform="translate(440,40)">
+      <rect class="node" width="140" height="42"/>
+      <text class="label" x="70" y="26" text-anchor="middle">TTS (gTTS / Cloud)</text>
+    </g>
+  </g>
+
+  <!-- Footer caption -->
+  <text x="20" y="480" font-family="Inter, sans-serif" font-size="12" fill="#64748b">Feature tree — core modules and how they link to the main app</text>
+</svg>

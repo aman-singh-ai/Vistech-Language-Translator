@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220">
+  <style>
+    .box { rx:10; stroke:#e6eef9; stroke-width:2; }
+    .label { font: 600 14px 'Inter', sans-serif; fill:#0f172a; }
+    .sub { font: 400 12px 'Inter', sans-serif; fill:#475569; }
+  </style>
+
+  <g transform="translate(30,20)">
+    <rect width="160" height="80" fill="#3b82f6" class="box"/>
+    <text class="label" x="80" y="44" text-anchor="middle" fill="#fff">Streamlit</text>
+    <text class="sub" x="80" y="62" text-anchor="middle" fill="#dbeafe">UI Framework</text>
+  </g>
+
+  <g transform="translate(220,20)">
+    <rect width="160" height="80" fill="#06b6d4" class="box"/>
+    <text class="label" x="80" y="44" text-anchor="middle" fill="#fff">deep-translator</text>
+    <text class="sub" x="80" y="62" text-anchor="middle" fill="#e6fffa">Translation Engine</text>
+  </g>
+
+  <g transform="translate(410,20)">
+    <rect width="160" height="80" fill="#ef4444" class="box"/>
+    <text class="label" x="80" y="44" text-anchor="middle" fill="#fff">SpeechRecognition</text>
+    <text class="sub" x="80" y="62" text-anchor="middle" fill="#fee2e2">STT</text>
+  </g>
+
+  <g transform="translate(600,20)">
+    <rect width="160" height="80" fill="#8b5cf6" class="box"/>
+    <text class="label" x="80" y="36" text-anchor="middle" fill="#fff">gTTS / Cloud TTS</text>
+    <text class="sub" x="80" y="56" text-anchor="middle" fill="#ede9fe">TTS</text>
+  </g>
+
+  <text x="30" y="140" font-family="Inter, sans-serif" font-size="13" fill="#334155">Additional: xhtml2pdf, gTTS, gRPC/REST APIs, optional Google Cloud TTS</text>
+</svg>
