@@ -128,7 +128,7 @@ with logo_col2:
             """
             <div style="text-align: center; margin-bottom: 12px;">
                 <span style="background-color: #3b82f6; color: #ffffff; padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 1.25rem; letter-spacing: 0.05em; display: inline-block; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                    TechNeekX AI
+                    VishTech AI
                 </span>
             </div>
             """,
