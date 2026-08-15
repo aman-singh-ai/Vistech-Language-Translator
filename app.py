@@ -341,7 +341,7 @@ if st.session_state.translated_text:
                 
     with ut_col3:
         txt_buffer = io.BytesIO(st.session_state.translated_text.encode('utf-8'))
-        st.download_button(label="📥 Download (.TXT)", data=txt_buffer.getvalue(), file_name="TechNeekX_Translation.txt", mime="text/plain", use_container_width=True)
+        st.download_button(label="📥 Download (.TXT)", data=txt_buffer.getvalue(), file_name="VishTech_Translation.txt", mime="text/plain", use_container_width=True)
         
     with ut_col4:
         html_report = f"""
@@ -357,7 +357,7 @@ if st.session_state.translated_text:
             </style>
         </head>
         <body>
-            <h1>TECHNEEKX AI TRANSLATION REPORT</h1>
+            <h1>VISHTECH AI TRANSLATION REPORT</h1>
             <div class="meta">Route Matrix: {src_lang_selection} &rarr; {target_lang_selection}</div>
             <div class="section-title">Source Content Text:</div>
             <div class="content-box">{st.session_state.source_text.replace('\n', '<br/>')}</div>
@@ -368,7 +368,7 @@ if st.session_state.translated_text:
         """
         pdf_buffer = io.BytesIO()
         pisa.CreatePDF(html_report, dest=pdf_buffer, encoding='utf-8')
-        st.download_button(label="📄 Download (.PDF)", data=pdf_buffer.getvalue(), file_name="TechNeekX_Report.pdf", mime="application/pdf", use_container_width=True)
+        st.download_button(label="📄 Download (.PDF)", data=pdf_buffer.getvalue(), file_name="VishTech_Report.pdf", mime="application/pdf", use_container_width=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
