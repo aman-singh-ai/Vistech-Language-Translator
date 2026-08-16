@@ -1,4 +1,4 @@
-# VishTech AI Translator
+# CodeAlpha_Language-Translation-Tool
 
 ![Title Animation](assets/title-anim.svg)
 
